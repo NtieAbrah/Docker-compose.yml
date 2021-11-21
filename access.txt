@@ -1,0 +1,5 @@
+homepageurl: https://as1.v.je/index.php
+adminuser: admin1@yahoo.com
+adminpass: num12
+nonadminuser: ab@yahoo.com
+nonadminpassword: num21
