@@ -1,9 +1,11 @@
 <?php
+session_start();
 
+?>
+<?php	
       $sub = 'ARTICLE PAGE';
 		require 'header.php';
-       
-
+		   
 $server = 'mysql';
 $username = 'student';
 $password = 'student';
@@ -26,7 +28,10 @@ if (isset($_POST['submit'])) {
 	$stmt->execute($values);
 	echo 'Article  ' . $_POST['title'] . ' added';
 }
+
 else {
+	if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+	
 ?>
 <form action="addArticle.php" method="POST">
 	<label>Article title:</label>
@@ -44,13 +49,27 @@ else {
 		foreach ($stmt as $row) {
 			echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
 		}
-        ?>
-
-</select>
+		?>
+		</select>
 <input type="submit" name="submit" value="Add" />
 </form>
 <?php
-}
+	}
+		else{
+			?>
+		<h2>Admin Users Only : Login</h2>
+
+		<form action="admin.php" method="post" style="padding: 40px">
+
+			<label>Enter Password</label>
+			<input type="password" name="password" />
+
+			<input type="submit" name="submit" value="Log In" />
+		</form>
+		<?php
+		}
+		}
+
 ?>
 
 <?php

@@ -29,7 +29,7 @@ if (isset($_GET['categoryid']))  {
 
 	
 	foreach ($articlesStmt as $article) {
-		echo '<li><a href="editArticle.php?id=' . $article['id'] . '">' . $article['title'] . '</a></li>';
+		echo '<li><a href="editArticle.php?id=' . $article['id'] . '">'  . $article['title'] .  ' : '  . $article['content'] .  '  ; <em>  ' . $article['publishDate'] . '</a></li>';
 	}
 
 }

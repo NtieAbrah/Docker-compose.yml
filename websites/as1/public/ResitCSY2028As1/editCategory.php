@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $sub = 'editCATEGORY PAGE';
 		require 'header.php';
         
@@ -24,6 +26,7 @@ if (isset($_POST['submit'])) {
 	];
 
 	$stmt->execute($values);
+	//$category = $Stmt->fetch();
 	echo 'Category ' . $_POST['name'] . ' edited';
 }
 else if (isset($_GET['id'])) {
@@ -39,6 +42,7 @@ else if (isset($_GET['id'])) {
 	$category = $categoryStmt->fetch();
 }
 else{
+	if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 ?>
 <form action="editCategory.php" method="POST">
    <label>ID:</label>
@@ -49,12 +53,46 @@ else{
     
 	<?php
 
-		}
+$stmt = $pdo->prepare('SELECT * FROM category');
+$stmt->execute();
+
+foreach ($stmt as $row) {
+	if ($row['id'] == ['id']) {
+		echo '<option value="' . $row['id'] . '" selected="selected">' . $row['name'] . '</option>';
+	}
+	else {
+	//	echo '<option value="' . $row['id'] . '">' . $row['name'] . '</option>';
+	}
+
+	$stmt->execute();
+
+	foreach ($stmt as $row) {
+		echo '<li><a href="index3.php?categoryid=' . $row['id'] . '">' . $row['name'] . '</a></li>';
+	}
+}
+
+		
 
 	?>
 	
 </form>
 <?php
+
+}
+else{
+	?>
+<h2>Admin Users Only : Login</h2>
+
+<form action="admin.php" method="post" style="padding: 40px">
+
+	<label>Enter Password</label>
+	<input type="password" name="password" />
+
+	<input type="submit" name="submit" value="Log In" />
+</form>
+<?php
+}
+}
 
 ?>
 

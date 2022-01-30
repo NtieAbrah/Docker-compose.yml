@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
       $sub = 'editARTICLE PAGE';
 		require 'header.php';
        
@@ -13,13 +15,14 @@ $schema = 'assignment1';
 $pdo = new PDO('mysql:dbname=' . $schema . ';host=' . $server, $username, $password);
 if (isset($_POST['submit'])) {
 	$stmt = $pdo->prepare('UPDATE article
-						   SET title = :title , content = :content, categoryid = :categoryid WHERE id = :id');
+						   SET title = :title , content = :content, categoryid = :categoryid, publishDate = :publishDate WHERE id = :id');
 						   
 
 	$values = [
 		'title' => $_POST['title'],
 		'content' => $_POST['content'],
         'categoryid' => $_POST['categoryid'],
+		'publishDate' => $_POST['publishDate'],
 		'id' => $_POST['id']
 	];
 
@@ -41,6 +44,7 @@ if (isset($_POST['submit'])) {
 	$article = $articleStmt->fetch();
 }
     else{
+		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 ?>
 <form action="editArticle.php" method="POST">
    <label>ID:</label>
@@ -49,7 +53,9 @@ if (isset($_POST['submit'])) {
 	<input type="text" name="title" />
     <label>Content:</label>
 	<input type="text" name="content" />
-    <label>Category:</label>
+	<label>Publish date:</label>
+	<input type="text" name="publishDate" />
+	<label>Category:</label>
     <select name="categoryid">
 	
 <?php
@@ -75,6 +81,21 @@ if (isset($_POST['submit'])) {
 <input type="submit" name="submit" value="Edit" />
 </form>
 <?php
+}
+
+else{
+	?>
+<h2>Admin Users Only : Login</h2>
+
+<form action="admin.php" method="post" style="padding: 40px">
+
+	<label>Enter Password</label>
+	<input type="password" name="password" />
+
+	<input type="submit" name="submit" value="Log In" />
+</form>
+<?php
+}
 }
 ?>
 
